@@ -26,7 +26,11 @@ cat <<- EOF > $json_file
     "domain" : "$domain",
     "start_date" : "$start",
     "end_date" : "$end"
+    "message": "expiration will happen in $ddiff days"
     }
 EOF
 
-curl -X POST -H "Content-Type: application/json" --data @body.json --header "authorization: Bearer $bearer" $webhook
+if [ $ddiff -lt 30 ]; then
+    curl -X POST -H "Content-Type: application/json" --data @body.json --header "authorization: Bearer $bearer" $webhook
+fi
+
